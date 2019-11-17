@@ -31,16 +31,13 @@ if __name__ == "__main__":
                       help="input matrix size")
     (options, args) = parser.parse_args()
 
-    print(options.size)
+    print('Matrix Size: {}'.format(options.size))
     size = options.size
 
     file_A = 'A_' + str(size) + '.csv'
     file_B = 'B_' + str(size) + '.csv'
     path_A = os.path.join(base_path, file_A)
     path_B = os.path.join(base_path, file_B)
-    print('input data:')
-    print(path_A)
-    print(path_B)
     A = genfromtxt(path_A, delimiter=',')
     B = genfromtxt(path_B, delimiter=',')
     C = matrix_mul_vanilla(A, B)

@@ -11,7 +11,7 @@ if not os.path.exists(base_path):
     os.makedirs(base_path)
 
 # %%
-sizes = [2, 100, 1000, 2000, 5000, 10000]
+sizes = [2, 128, 512, 1024, 2048]
 
 # %%
 for size in sizes:

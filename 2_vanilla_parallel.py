@@ -4,6 +4,7 @@ import multiprocessing
 import os
 from numpy import genfromtxt
 from optparse import OptionParser
+import math
 
 print('Parallel Matrix Multiplication')
 
@@ -40,21 +41,27 @@ if __name__ == "__main__":
                       dest="size",
                       default="2",
                       help="input matrix size")
+
+    parser.add_option("-t",
+                    dest="thread",
+                    default="1",
+                    help="input thread number")
     (options, args) = parser.parse_args()
 
-    print(options.size)
+    print('Matrix Size: {}'.format(options.size))
+    print('Thread Number: {}'.format(options.thread))
+
     size = options.size
+    threadNumber = int(options.thread)
 
     file_A = 'A_' + str(size) + '.csv'
     file_B = 'B_' + str(size) + '.csv'
     path_A = os.path.join(base_path, file_A)
     path_B = os.path.join(base_path, file_B)
-    print('input data:')
-    print(path_A)
-    print(path_B)
+
     A = genfromtxt(path_A, delimiter=',')
     B = genfromtxt(path_B, delimiter=',')
-    threadNumber = 2
+    
     n, m, p = len(A), len(A[0]), len(B[0])
     C = np.zeros((n, p))
     print(C.shape)
