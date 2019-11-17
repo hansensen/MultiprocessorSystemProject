@@ -1,6 +1,14 @@
-# SuffixArrayMultiprocessing
+# Matrix Multiplication Method Comparison
 
-### This project is a multiprocessing implementation of Suffix Array Construction
+### This project is a multiprocessing implementation of Matrix Multiplication
+
+
+## How to start
+1. Generate matrix data by executing matrix_generation script
+```
+    python notebook/matrix_generation.py
+```
+
 
 
 Resources:
