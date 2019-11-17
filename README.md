@@ -5,9 +5,13 @@
 
 ## How to start
 1. Generate matrix data by executing matrix_generation script
+
 ```
     python notebook/matrix_generation.py
 ```
+After running the script, a test_data directory is generated with matrix data.
+
+2. 
 
 
 
