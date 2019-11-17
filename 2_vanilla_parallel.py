@@ -12,7 +12,7 @@ print('Parallel Matrix Multiplication')
 def lineMult(start):
     global A, B, C, part
     n = len(A)
-    print('starts from {} and ends {}'.format(start, start+part))
+    # print('starts from {} and ends {}'.format(start, start+part))
     for i in range(start, start+part):
         for k in range(n):
             for j in range(n):
@@ -23,7 +23,7 @@ def lineMult(start):
 def ikjMatrixProduct(A, B, threadNumber):
     n = len(A)
     pool = multiprocessing.Pool(threadNumber)
-    print(list(range(0, n, part)))
+    # print(list(range(0, n, part)))
     results = pool.map(lineMult, list(range(0,n, part)))
     return sum(results)
 
@@ -64,8 +64,9 @@ if __name__ == "__main__":
     
     n, m, p = len(A), len(A[0]), len(B[0])
     C = np.zeros((n, p))
-    print(C.shape)
     part = int(len(A) / threadNumber)
     if part < 1:
         part = 1
     C = ikjMatrixProduct(A, B, threadNumber)
+
+    print()
