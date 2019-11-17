@@ -16,7 +16,6 @@ def lineMult(start):
         for k in range(n):
             for j in range(n):
                 C[i][j] += A[i][k] * B[k][j]
-                tmp = A[i][k] * B[k][j]
     return C
 
 # %%
@@ -57,3 +56,5 @@ for size in sizes:
     if part < 1:
         part = 1
     C = ikjMatrixProduct(A, B, threadNumber)
+
+# print(C)

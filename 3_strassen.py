@@ -5,6 +5,8 @@ from optparse import OptionParser
 from math import ceil, log
 from time import process_time
 import numpy as np
+import os
+from numpy import genfromtxt
 
 def ikj_matrix_product(A, B):
     n = len(A)
@@ -35,14 +37,7 @@ def subtract(A, B):
 
 
 def strassenR(A, B):
-    """
-    Implementation of the strassen algorithm, similar to
-    http://en.wikipedia.org/w/index.php?title=Strassen_algorithm&oldid=498910018#Source_code_of_the_Strassen_algorithm_in_C_language
-    """
     n = len(A)
-
-
-
     if n <= int(LEAF_SIZE):
         return ikj_matrix_product(A, B)
     else:
@@ -144,16 +139,43 @@ def strassen(A, B):
             C[i][j] = CPrep[i][j]
     return C
 
+# %%
+base_path='./test_data'
 
-# Start the stopwatch / counter
-t1_start = process_time()
+# %%
+if not os.path.exists(base_path):
+    os.makedirs(base_path)
 
-A = np.random.randint(1,2,(100,100))
-B = np.random.randint(1,2,(100,100))
-LEAF_SIZE = 1
+# %%
+# sizes = [2, 100, 1000, 2000, 5000, 10000]
+sizes = [2, 100]
 
-C = strassen(A, B)
-# Stop the stopwatch / counter
-t1_stop = process_time()
-print("Elapsed time during the whole program in seconds:",
-        t1_stop - t1_start)
+for size in sizes:
+    file_A = 'A_' + str(size) + '.csv'
+    file_B = 'B_' + str(size) + '.csv'
+    path_A = os.path.join(base_path, file_A)
+    path_B = os.path.join(base_path, file_B)
+    print(path_A)
+    print(path_B)
+    A = genfromtxt(path_A, delimiter=',')
+    B = genfromtxt(path_B, delimiter=',')
+    threadNumber = 2
+
+    n, m, p = len(A), len(A[0]), len(B[0])
+
+    C = np.zeros((n, p))
+    print(C.shape)
+    part = int(len(A) / threadNumber)
+    if part < 1:
+        part = 1
+    # Start the stopwatch / counter
+    t1_start = process_time()
+    LEAF_SIZE = 1
+
+    C = strassen(A, B)
+    # Stop the stopwatch / counter
+    t1_stop = process_time()
+    print("Elapsed time during the whole program in seconds:",
+            t1_stop - t1_start)
+
+# print(C)

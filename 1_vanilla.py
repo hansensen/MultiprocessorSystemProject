@@ -37,6 +37,7 @@ for size in sizes:
     print(path_B)
     A = genfromtxt(path_A, delimiter=',')
     B = genfromtxt(path_B, delimiter=',')
-    res = matrix_mul_vanilla(A, B)
+    C = matrix_mul_vanilla(A, B)
 
 # %%
+# print(C)
