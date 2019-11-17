@@ -7,6 +7,9 @@ from time import process_time
 import numpy as np
 import os
 from numpy import genfromtxt
+from optparse import OptionParser
+
+print('Strassen Algorithm')
 
 def ikj_matrix_product(A, B):
     n = len(A)
@@ -17,7 +20,6 @@ def ikj_matrix_product(A, B):
                 C[i][j] += A[i][k] * B[k][j]
     return C
 
-
 def add(A, B):
     n = len(A)
     C = [[0 for j in range(0, n)] for i in range(0, n)]
@@ -26,7 +28,6 @@ def add(A, B):
             C[i][j] = A[i][j] + B[i][j]
     return C
 
-
 def subtract(A, B):
     n = len(A)
     C = [[0 for j in range(0, n)] for i in range(0, n)]
@@ -34,7 +35,6 @@ def subtract(A, B):
         for j in range(0, n):
             C[i][j] = A[i][j] - B[i][j]
     return C
-
 
 def strassenR(A, B):
     n = len(A)
@@ -147,10 +147,17 @@ if not os.path.exists(base_path):
     os.makedirs(base_path)
 
 # %%
-# sizes = [2, 100, 1000, 2000, 5000, 10000]
-sizes = [2, 100]
+if __name__ == "__main__":
+    parser = OptionParser()
+    parser.add_option("-s",
+                      dest="size",
+                      default="2",
+                      help="input matrix size")
+    (options, args) = parser.parse_args()
 
-for size in sizes:
+    print(options.size)
+    size = options.size
+
     file_A = 'A_' + str(size) + '.csv'
     file_B = 'B_' + str(size) + '.csv'
     path_A = os.path.join(base_path, file_A)
@@ -177,5 +184,3 @@ for size in sizes:
     t1_stop = process_time()
     print("Elapsed time during the whole program in seconds:",
             t1_stop - t1_start)
-
-# print(C)

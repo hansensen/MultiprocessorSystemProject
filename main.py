@@ -9,6 +9,6 @@
 
 # # %%
 import os
-os.system('python ./1_vanilla.py')
-os.system('python ./2_vanilla_parallel.py')
-os.system('python ./3_strassen.py')
+os.system('time python ./1_vanilla.py')
+os.system('time python ./2_vanilla_parallel.py')
+os.system('time python ./3_strassen.py')

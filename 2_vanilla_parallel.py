@@ -3,9 +3,9 @@ import numpy as np
 import multiprocessing
 import os
 from numpy import genfromtxt
+from optparse import OptionParser
 
-# %%
-
+print('Parallel Matrix Multiplication')
 
 # %%
 def lineMult(start):
@@ -34,27 +34,31 @@ if not os.path.exists(base_path):
     os.makedirs(base_path)
 
 # %%
-# sizes = [2, 100, 1000, 2000, 5000, 10000]
-sizes = [2, 100]
+if __name__ == "__main__":
+    parser = OptionParser()
+    parser.add_option("-s",
+                      dest="size",
+                      default="2",
+                      help="input matrix size")
+    (options, args) = parser.parse_args()
 
-for size in sizes:
+    print(options.size)
+    size = options.size
+
     file_A = 'A_' + str(size) + '.csv'
     file_B = 'B_' + str(size) + '.csv'
     path_A = os.path.join(base_path, file_A)
     path_B = os.path.join(base_path, file_B)
+    print('input data:')
     print(path_A)
     print(path_B)
     A = genfromtxt(path_A, delimiter=',')
     B = genfromtxt(path_B, delimiter=',')
     threadNumber = 2
-
     n, m, p = len(A), len(A[0]), len(B[0])
-
     C = np.zeros((n, p))
     print(C.shape)
     part = int(len(A) / threadNumber)
     if part < 1:
         part = 1
     C = ikjMatrixProduct(A, B, threadNumber)
-
-# print(C)
