@@ -1,0 +1,42 @@
+Parallel Matrix Multiplication
+Matrix Size: 2
+Thread Number: 2
+Parallel Matrix Multiplication
+Matrix Size: 2
+Thread Number: 2
+Parallel Matrix Multiplication
+Matrix Size: 2
+Thread Number: 2
+
+Vanilla Matrix Multiplication
+Matrix Size: 2
+Time ---> 0
+Strassen Algorithm
+Matrix Size: 2
+(2, 2)
+Elapsed time during the whole program in seconds: 0.00017799999999998373
+Vanilla Matrix Multiplication
+Matrix Size: 128
+Time ---> 1395
+Strassen Algorithm
+Matrix Size: 128
+(128, 128)
+Elapsed time during the whole program in seconds: 15.430114
+Vanilla Matrix Multiplication
+Matrix Size: 512
+Strassen Algorithm
+Matrix Size: 512
+(512, 512)
+Vanilla Matrix Multiplication
+Matrix Size: 1024
+Strassen Algorithm
+Matrix Size: 1024
+Vanilla Matrix Multiplication
+Matrix Size: 2048
+Strassen Algorithm
+Matrix Size: 2048
+matrix size: 2
+matrix size: 128
+matrix size: 512
+matrix size: 1024
+matrix size: 2048

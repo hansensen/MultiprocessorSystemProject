@@ -20,9 +20,9 @@ def lineMult(start):
     return C
 
 # %%
-def ikjMatrixProduct(A, B, threadNumber):
+def ikjMatrixProduct(A, B, num_thread):
     n = len(A)
-    pool = multiprocessing.Pool(threadNumber)
+    pool = multiprocessing.Pool(num_thread)
     # print(list(range(0, n, part)))
     results = pool.map(lineMult, list(range(0,n, part)))
     return sum(results)
@@ -30,13 +30,11 @@ def ikjMatrixProduct(A, B, threadNumber):
 # %%
 base_path='./test_data'
 
-# %%
-if not os.path.exists(base_path):
-    os.makedirs(base_path)
 
 # %%
 if __name__ == "__main__":
     parser = OptionParser()
+    # takes size as an arg
     parser.add_option("-s",
                       dest="size",
                       default="2",
@@ -52,7 +50,7 @@ if __name__ == "__main__":
     print('Thread Number: {}'.format(options.thread))
 
     size = options.size
-    threadNumber = int(options.thread)
+    num_thread = int(options.thread)
 
     file_A = 'A_' + str(size) + '.csv'
     file_B = 'B_' + str(size) + '.csv'
@@ -62,11 +60,11 @@ if __name__ == "__main__":
     A = genfromtxt(path_A, delimiter=',')
     B = genfromtxt(path_B, delimiter=',')
     
-    n, m, p = len(A), len(A[0]), len(B[0])
-    C = np.zeros((n, p))
-    part = int(len(A) / threadNumber)
+    n, m,l= len(A), len(A[0]), len(B[0])
+    C = np.zeros((n, l))
+    part = int(len(A) / num_thread)
     if part < 1:
         part = 1
-    C = ikjMatrixProduct(A, B, threadNumber)
+    C = ikjMatrixProduct(A, B, num_thread)
 
     print()

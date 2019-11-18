@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 from optparse import OptionParser
 from math import ceil, log
 from time import process_time
@@ -11,7 +8,7 @@ from optparse import OptionParser
 
 print('Strassen Algorithm')
 
-def ikj_matrix_product(A, B):
+def vanilla_matrix_mul(A, B):
     n = len(A)
     C = [[0 for i in range(n)] for j in range(n)]
     for i in range(n):
@@ -20,7 +17,7 @@ def ikj_matrix_product(A, B):
                 C[i][j] += A[i][k] * B[k][j]
     return C
 
-def add(A, B):
+def add_mul(A, B):
     n = len(A)
     C = [[0 for j in range(0, n)] for i in range(0, n)]
     for i in range(0, n):
@@ -28,7 +25,7 @@ def add(A, B):
             C[i][j] = A[i][j] + B[i][j]
     return C
 
-def subtract(A, B):
+def subtract_mul(A, B):
     n = len(A)
     C = [[0 for j in range(0, n)] for i in range(0, n)]
     for i in range(0, n):
@@ -39,8 +36,9 @@ def subtract(A, B):
 def strassenR(A, B):
     n = len(A)
 
-    if n <= int(LEAF_SIZE):
-        return ikj_matrix_product(A, B)
+    # stop conditon for recursive strassen algo
+    if n < int(stop_condition):
+        return vanilla_matrix_mul(A, B)
     else:
         # initializing the new sub-matrices
         new_size = int(n/2)
@@ -71,43 +69,43 @@ def strassenR(A, B):
                 b22[i][j] = B[i + new_size][j + new_size] # bottom right
 
         # Calculating p1 to p7:
-        aResult = add(a11, a22)
-        bResult = add(b11, b22)
+        aResult = add_mul(a11, a22)
+        bResult = add_mul(b11, b22)
         p1 = strassenR(aResult, bResult) # p1 = (a11+a22) * (b11+b22)
 
-        aResult = add(a21, a22)      # a21 + a22
+        aResult = add_mul(a21, a22)      # a21 + a22
         p2 = strassenR(aResult, b11)  # p2 = (a21+a22) * (b11)
 
-        bResult = subtract(b12, b22) # b12 - b22
+        bResult = subtract_mul(b12, b22) # b12 - b22
         p3 = strassenR(a11, bResult)  # p3 = (a11) * (b12 - b22)
 
-        bResult = subtract(b21, b11) # b21 - b11
+        bResult = subtract_mul(b21, b11) # b21 - b11
         p4 =strassenR(a22, bResult)   # p4 = (a22) * (b21 - b11)
 
-        aResult = add(a11, a12)      # a11 + a12
+        aResult = add_mul(a11, a12)      # a11 + a12
         p5 = strassenR(aResult, b22)  # p5 = (a11+a12) * (b22)
 
-        aResult = subtract(a21, a11) # a21 - a11
-        bResult = add(b11, b12)      # b11 + b12
+        aResult = subtract_mul(a21, a11) # a21 - a11
+        bResult = add_mul(b11, b12)      # b11 + b12
         p6 = strassenR(aResult, bResult) # p6 = (a21-a11) * (b11+b12)
 
-        aResult = subtract(a12, a22) # a12 - a22
-        bResult = add(b21, b22)      # b21 + b22
+        aResult = subtract_mul(a12, a22) # a12 - a22
+        bResult = add_mul(b21, b22)      # b21 + b22
         p7 = strassenR(aResult, bResult) # p7 = (a12-a22) * (b21+b22)
 
         # calculating c21, c21, c11 e c22:
-        c12 = add(p3, p5) # c12 = p3 + p5
-        c21 = add(p2, p4)  # c21 = p2 + p4
+        c12 = add_mul(p3, p5) # c12 = p3 + p5
+        c21 = add_mul(p2, p4)  # c21 = p2 + p4
 
-        aResult = add(p1, p4) # p1 + p4
-        bResult = add(aResult, p7) # p1 + p4 + p7
-        c11 = subtract(bResult, p5) # c11 = p1 + p4 - p5 + p7
+        aResult = add_mul(p1, p4) # p1 + p4
+        bResult = add_mul(aResult, p7) # p1 + p4 + p7
+        c11 = subtract_mul(bResult, p5) # c11 = p1 + p4 - p5 + p7
 
-        aResult = add(p1, p3) # p1 + p3
-        bResult = add(aResult, p6) # p1 + p3 + p6
-        c22 = subtract(bResult, p2) # c22 = p1 + p3 - p2 + p6
+        aResult = add_mul(p1, p3) # p1 + p3
+        bResult = add_mul(aResult, p6) # p1 + p3 + p6
+        c22 = subtract_mul(bResult, p2) # c22 = p1 + p3 - p2 + p6
 
-        # Grouping the results obtained in a single matrix:
+        # concat two matrix to get a new matrix
         C = [[0 for j in range(0, n)] for i in range(0, n)]
         for i in range(0, new_size):
             for j in range(0, new_size):
@@ -117,39 +115,35 @@ def strassenR(A, B):
                 C[i + new_size][j + new_size] = c22[i][j]
         return C
 
+def get_next_power_of_two(n):
+    power_of_two = 2**int(ceil(log(n,2)))
+    return power_of_two
 
 def strassen(A, B):
-    assert len(A) == len(A[0]) == len(B) == len(B[0])
-
-    # Make the matrices bigger so that you can apply the strassen
-    # algorithm recursively without having to deal with odd
-    # matrix sizes
-    nextPowerOfTwo = lambda n: 2**int(ceil(log(n,2)))
     n = len(A)
-    m = nextPowerOfTwo(n)
-    APrep = [[0 for i in range(m)] for j in range(m)]
-    BPrep = [[0 for i in range(m)] for j in range(m)]
+    m = get_next_power_of_two(n)
+    # create new A and B matrix with size ms
+    A_new = np.zeros((m,m),dtype=int)
+    B_new = np.zeros((m,m),dtype=int)
     for i in range(n):
         for j in range(n):
-            APrep[i][j] = A[i][j]
-            BPrep[i][j] = B[i][j]
-    CPrep = strassenR(APrep, BPrep)
+            A_new[i][j] = A[i][j]
+            B_new[i][j] = B[i][j]
+    C_new = strassenR(A_new, B_new)
     C = [[0 for i in range(n)] for j in range(n)]
     for i in range(n):
         for j in range(n):
-            C[i][j] = CPrep[i][j]
+            C[i][j] = C_new[i][j]
     return C
 
 # %%
 base_path='./test_data'
 
 # %%
-if not os.path.exists(base_path):
-    os.makedirs(base_path)
-
-# %%
 if __name__ == "__main__":
     parser = OptionParser()
+
+    # takes size as an arg
     parser.add_option("-s",
                       dest="size",
                       default="2",
@@ -166,21 +160,16 @@ if __name__ == "__main__":
 
     A = genfromtxt(path_A, delimiter=',')
     B = genfromtxt(path_B, delimiter=',')
-    threadNumber = 2
+    num_thread = 2
 
-    n, m, p = len(A), len(A[0]), len(B[0])
+    n, m,l= len(A), len(A[0]), len(B[0])
 
-    C = np.zeros((n, p))
+    C = np.zeros((n, l))
     print(C.shape)
-    part = int(len(A) / threadNumber)
+    # according to the num_thread, divide matrix A into parts
+    part = int(len(A) / num_thread)
     if part < 1:
         part = 1
-    # Start the stopwatch / counter
-    t1_start = process_time()
-    LEAF_SIZE = 1
 
+    stop_condition = 2
     C = strassen(A, B)
-    # Stop the stopwatch / counter
-    t1_stop = process_time()
-    print("Elapsed time during the whole program in seconds:",
-            t1_stop - t1_start)
