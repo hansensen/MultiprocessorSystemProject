@@ -15,18 +15,18 @@ if __name__ == "__main__":
     os.system('time python ./2_vanilla_parallel.py -s {} -t {}'.format(2, 2))
 
     threads = [2,4,8,16,32,64,128]
-    for thread in thread:
+    for thread in threads:
         os.system('time python ./2_vanilla_parallel.py -s {} -t {}'.format(128, thread))
 
 
     threads = [2,4,8,16,32,64,128,256,512]
-    for thread in thread:
+    for thread in threads:
         os.system('time python ./2_vanilla_parallel.py -s {} -t {}'.format(512, thread))
 
     threads = [2,4,8,16,32,64,128,256,512,1024]
-    for thread in thread:
+    for thread in threads:
         os.system('time python ./2_vanilla_parallel.py -s {} -t {}'.format(1024, thread))
 
     threads = [2,4,8,16,32,64,128,256,512,1024,2048]
-    for thread in thread:
+    for thread in threads:
         os.system('time python ./2_vanilla_parallel.py -s {} -t {}'.format(2048, thread))
