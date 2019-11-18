@@ -4,7 +4,7 @@ import os
 from numpy import genfromtxt
 
 # %%
-base_path='../test_data'
+base_path='./test_data'
 
 # %%
 if not os.path.exists(base_path):
